@@ -59,7 +59,6 @@
         max-width: 800px;
         display: flex;
         margin: 0 4rem 0 3rem;
-        justify-content: space-between;
         align-items: center;
         animation: 2.5s uptodown 0.5s ease-in-out forwards;
       }
@@ -296,6 +295,94 @@
           transform: scale(1.5);
         }
       }
+      .modal {
+        width: 100%;
+        height: 100%;
+        background-color: #00000080;
+        position: absolute;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+      }
+      .hidden {
+        display: none;
+      }
+      .modal__content {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 50%;
+        height: 50%;
+        background-color: white;
+        overflow-x: hidden;
+      }
+      .modal__content .cancel {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2rem;
+        cursor: pointer;
+      }
+      .modal .modal__content .content__slider {
+        padding-top: 3rem;
+        width: 30rem;
+        height: 20rem;
+        transform-style: preserve-3d;
+      }
+      .modal .modal__content .content__slider input {
+        display: none;
+      }
+      .modal .modal__content .content__slider #planta:checked ~ .card #planta,
+      .modal .modal__content .content__slider #fuego:checked ~ .card #fuego,
+      .modal .modal__content .content__slider #agua:checked ~ .card #agua {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+        z-index: 1;
+      }
+      .modal .modal__content .content__slider #planta:checked ~ .card #fuego,
+      .modal .modal__content .content__slider #fuego:checked ~ .card #agua,
+      .modal .modal__content .content__slider #agua:checked ~ .card #planta {
+        transform: translateX(40%) scale(0.8);
+        opacity: 0.6;
+        z-index: -1;
+      }
+      .modal .modal__content .content__slider #planta:checked ~ .card #agua,
+      .modal .modal__content .content__slider #fuego:checked ~ .card #planta,
+      .modal .modal__content .content__slider #agua:checked ~ .card #fuego {
+        transform: translateX(-40%) scale(0.8);
+        opacity: 0.6;
+        z-index: -1;
+      }
+      .modal .modal__content .content__slider .card {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+      .modal .modal__content .content__slider .card label {
+        position: absolute;
+        background-color: var(--yellow);
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        transition: all 0.5s ease-in-out;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+      }
+      .modal .modal__content .content__slider .card label img {
+        height: 20rem;
+      }
+      .modal__content button {
+        width: 30%;
+        height: 3rem;
+        border: none;
+        background-color: var(--red);
+        color: var(--blue);
+        font-size: 2rem;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -334,13 +421,13 @@
           <div></div>
         </section>
         <section class="footer">
-          <div>
+          <div class="btn">
             <img src="./assets/squirtle.png" alt="squirtle" />
           </div>
-          <div>
+          <div class="btn">
             <img src="./assets/bulbasaur.png" alt="bulbasaur" />
           </div>
-          <div>
+          <div class="btn">
             <img src="./assets/charmander.png" alt="charmander" />
           </div>
         </section>
@@ -352,7 +439,45 @@
         <div></div>
       </section>
       <!-- Modal -->
-      <section></section>
+      <section class="modal hidden">
+        <div class="modal__content">
+          <img
+            class="cancel"
+            src="https://img.icons8.com/3d-fluency/512/close-window.png"
+            alt="cancel"
+          />
+          <div class="content__slider">
+            <input type="radio" name="poke" id="planta" />
+            <input type="radio" name="poke" id="fuego" checked />
+            <input type="radio" name="poke" id="agua" />
+            <div class="card">
+              <label for="planta" id="planta">
+                <img src="./assets/bulbasaur.png" alt="bulbasaur" srcset="" />
+              </label>
+              <label for="fuego" id="fuego"
+                ><img src="./assets/charmander.png" alt="charmander" srcset=""
+              /></label>
+              <label for="agua" id="agua">
+                <img src="./assets/squirtle.png" alt="squirtle" srcset="" />
+              </label>
+            </div>
+          </div>
+          <button>Lo quiero!</button>
+        </div>
+      </section>
     </div>
+    <script>
+      const btn = document.querySelectorAll(".btn");
+      const modal = document.querySelector(".modal");
+      const closed = document.querySelector(".cancel");
+      btn.forEach((e) =>
+        e.addEventListener("click", () => {
+          modal.classList.toggle("hidden");
+        })
+      );
+      closed.addEventListener("click", () => {
+        modal.classList.toggle("hidden");
+      });
+    </script>
   </body>
 </html>
